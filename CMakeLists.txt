@@ -3,22 +3,21 @@ cmake_minimum_required(VERSION 3.16)
 project(wpa_ctrl_cpp LANGUAGES C CXX)
 
 add_library(wpa_ctrl
-    wpa_ctrl.c
-    wpa_ctrl.cpp
-	wpa_debug.c
-	wpabuf.c
-	trace.c
-	utils/common.c
-	utils/os_posix.c
-
+    src/wpa_ctrl.c
+    src/wpa_ctrl.cpp
+	src/wpa_debug.c
+	src/wpabuf.c
+	src/trace.c
+	src/utils/common.c
+	src/utils/os_posix.c
 )
 add_library(wpa_ctrl::wpa_ctrl ALIAS wpa_ctrl)
 
 target_include_directories(wpa_ctrl
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
 	PRIVATE
-		${CMAKE_CURRENT_SOURCE_DIR}/utils
+		${CMAKE_CURRENT_SOURCE_DIR}/src/utils
 )
 target_compile_features(wpa_ctrl PUBLIC cxx_std_17)
 set_target_properties(wpa_ctrl PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED YES)
@@ -30,7 +29,6 @@ if(WIN32)
         CONFIG_NATIVE_WINDOWS
     )
 elseif(UNIX)
-    target_sources(wpa_ctrl PRIVATE utils/os_posix.c)
     target_compile_definitions(wpa_ctrl PRIVATE
         CONFIG_CTRL_IFACE
         CONFIG_CTRL_IFACE_UNIX
