@@ -5,12 +5,20 @@ project(wpa_ctrl_cpp LANGUAGES C CXX)
 add_library(wpa_ctrl
     wpa_ctrl.c
     wpa_ctrl.cpp
+	wpa_debug.c
+	wpabuf.c
+	trace.c
+	utils/common.c
+	utils/os_posix.c
+
 )
 add_library(wpa_ctrl::wpa_ctrl ALIAS wpa_ctrl)
 
 target_include_directories(wpa_ctrl
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 target_compile_features(wpa_ctrl PUBLIC cxx_std_17)
 set_target_properties(wpa_ctrl PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED YES)
